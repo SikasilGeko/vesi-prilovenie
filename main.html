@@ -35,11 +35,11 @@
         <div class="form-container">
             <div class="form-group">
                 <label for="apiKey">Ключ:</label>
-                <input type="text" class="form-control" id="apiKey" placeholder="Enter API Key">
+                <input type="text" class="form-control" id="apiKey" placeholder="Сложи ключ">
             </div>
             <div class="form-group">
                 <label for="symbols">Акции:</label>
-                <input type="text" class="form-control" id="symbols" placeholder="Enter stock symbols">
+                <input type="text" class="form-control" id="symbols" placeholder="Сложи борсов код">
             </div>
             <div class="form-group">
                 <label for="date">Дата:</label>
@@ -49,7 +49,7 @@
         </div>
         <div class="spinner" id="loadingSpinner" style="display: none;">
             <div class="spinner-border" role="status">
-                <span class="sr-only">Loading...</span>
+                <span class="sr-only">Зареждане...</span>
             </div>
         </div>
         <table class="table">
@@ -57,9 +57,9 @@
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">ISIN:</th>
-                    <th scope="col">Name:</th>
-                    <th scope="col">Currency:</th>
-                    <th scope="col">Closing Price:</th>
+                    <th scope="col">Име:</th>
+                    <th scope="col">Валута:</th>
+                    <th scope="col">Затваряща цена:</th>
                 </tr>
             </thead>
             <tbody id="stockTable">
