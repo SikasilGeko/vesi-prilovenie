@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
     <style>
         .table-header {
             background-color: orange;
@@ -18,12 +19,12 @@
             border: 1px solid black;
             height: 400px;
         }
-        
+
         .spinner {
             text-align: center;
             padding: 20px;
         }
-        
+
         .form-container {
             margin-bottom: 20px;
         }
@@ -46,6 +47,7 @@
                 <input type="date" class="form-control" id="date">
             </div>
             <button class="btn btn-primary" id="fetchDataButton">Старт</button>
+            <button class="btn btn-success" id="downloadExcelButton">Изтегли в Excel</button>
         </div>
         <div class="spinner" id="loadingSpinner" style="display: none;">
             <div class="spinner-border" role="status">
@@ -145,6 +147,26 @@
 
             loadingSpinner.style.display = 'none';
         }
+
+        document.getElementById('downloadExcelButton').addEventListener('click', () => {
+            const tableBody = document.getElementById('stockTable');
+            const rows = tableBody.getElementsByTagName('tr');
+            const data = [['#', 'ISIN', 'Име', 'Валута', 'Затваряща цена']];
+
+            for (let i = 0; i < rows.length; i++) {
+                const cells = rows[i].getElementsByTagName('td');
+                const rowData = [i + 1]; // Добавя индекса на реда в първата колона
+                for (let cell of cells) {
+                    rowData.push(cell.innerText);
+                }
+                data.push(rowData);
+            }
+
+            const worksheet = XLSX.utils.aoa_to_sheet(data);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, 'Stocks');
+            XLSX.writeFile(workbook, 'stocks.xlsx');
+        });
     </script>
 </body>
 </html>
