@@ -77,12 +77,24 @@
                     fetch(historicalUrl)
                 ]);
 
-                if (!profileResponse.ok || !historicalResponse.ok) {
-                    throw new Error('Network response was not ok');
+                if (!profileResponse.ok) {
+                    console.error(`Profile response not ok for ${symbol}:`, profileResponse.statusText);
+                    throw new Error('Network response was not ok for profile');
+                }
+
+                if (!historicalResponse.ok) {
+                    console.error(`Historical response not ok for ${symbol}:`, historicalResponse.statusText);
+                    throw new Error('Network response was not ok for historical data');
                 }
 
                 const profileData = await profileResponse.json();
                 const historicalData = await historicalResponse.json();
+
+                if (historicalData.historical.length === 0) {
+                    console.warn(`No historical data found for ${symbol} on ${date}`);
+                    throw new Error('No historical data available');
+                }
+
                 const historicalPrice = historicalData.historical[0]?.close || 'N/A';
 
                 return {
@@ -92,7 +104,7 @@
                     close: historicalPrice
                 };
             } catch (error) {
-                console.error('Error fetching stock data:', error);
+                console.error('Error fetching stock data for', symbol, error);
                 return {
                     ISIN: 'N/A',
                     name: 'N/A',
